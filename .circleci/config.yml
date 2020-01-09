@@ -1,11 +1,25 @@
 version: 2
 jobs:
-  build:
+  checkout:
+    docker:
+      - image: debian:buster
+    working_directory: ~/demo
+    steps:
+      - checkout
+      - save_cache:
+          key: demo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/demo
+
+
+  greeting1:
     docker:
       - image: debian:buster
 
     steps:
-      - checkout
+      - restore_cache:
+          keys:
+            - demo-{{ .Environment.CIRCLE_SHA1 }}
 
       - run:
           name: Greeting
@@ -13,22 +27,49 @@ jobs:
 
       - run:
           name: Print the Current Time
-          command: date
+          command: sleep 20 && date
   greeting2:
     docker:
       - image: debian:buster
 
     steps:
+      - restore_cache:
+          keys:
+            - demo-{{ .Environment.CIRCLE_SHA1 }}
+
       - run:
           name: Greeting2
           command: echo "Hi!!"
       - run:
           name: Print the Current Time
-          command: date
+          command: sleep 20 && date
+
+  bye:
+    docker:
+      - image: debian:buster
+
+    steps:
+      - restore_cache:
+          keys:
+            - demo-{{ .Environment.CIRCLE_SHA1 }}
+
+      - run:
+          name: bye
+          command: echo bye bye
 
 workflows:
   version: 2
   greeting1:
     jobs:
-      - build
-      - greeting2
+      - checkout
+      - greeting1:
+          requires:
+            - checkout
+      
+      - greeting2:
+          requires:
+            - checkout
+      - bye:
+          requires:
+            - greeting1
+            - greeting2
