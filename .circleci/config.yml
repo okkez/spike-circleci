@@ -59,7 +59,7 @@ jobs:
 
 workflows:
   version: 2
-  greeting1:
+  flow:
     jobs:
       - checkout
       - greeting1:
