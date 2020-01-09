@@ -15,6 +15,9 @@ jobs:
           name: Print the Current Time
           command: date
   greeting2:
+    docker:
+      - image: debian:buster
+
     steps:
       - run:
           name: Greeting2
