@@ -31,6 +31,4 @@ workflows:
   greeting1:
     jobs:
       - build
-  greeting2:
-    jobs:
       - greeting2
