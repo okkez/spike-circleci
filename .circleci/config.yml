@@ -12,7 +12,7 @@ jobs:
             - ~/demo
 
 
-  greeting1:
+  greeting: &greeting
     docker:
       - image: debian:buster
 
@@ -28,21 +28,23 @@ jobs:
       - run:
           name: Print the Current Time
           command: sleep 20 && date
+  greeting1:
+    <<: *greeting
   greeting2:
-    docker:
-      - image: debian:buster
+    <<: *greeting
+  greeting3:
+    <<: *greeting
+  greeting4:
+    <<: *greeting
+  greeting5:
+    <<: *greeting
+  greeting6:
+    <<: *greeting
+  greeting7:
+    <<: *greeting
+  greeting8:
+    <<: *greeting
 
-    steps:
-      - restore_cache:
-          keys:
-            - demo-{{ .Environment.CIRCLE_SHA1 }}
-
-      - run:
-          name: Greeting2
-          command: echo "Hi!!"
-      - run:
-          name: Print the Current Time
-          command: sleep 20 && date
 
   bye:
     docker:
@@ -69,7 +71,32 @@ workflows:
       - greeting2:
           requires:
             - checkout
+      - greeting3:
+          requires:
+            - checkout
+      - greeting4:
+          requires:
+            - checkout
+      - greeting5:
+          requires:
+            - checkout
+      - greeting6:
+          requires:
+            - checkout
+      - greeting7:
+          requires:
+            - checkout
+      - greeting8:
+          requires:
+            - checkout
       - bye:
           requires:
             - greeting1
             - greeting2
+            - greeting3
+            - greeting4
+            - greeting5
+            - greeting6
+            - greeting7
+            - greeting8
+
