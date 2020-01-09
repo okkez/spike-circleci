@@ -14,9 +14,20 @@ jobs:
       - run:
           name: Print the Current Time
           command: date
+  greeting2:
+    steps:
+      - run:
+          name: Greeting2
+          command: echo "Hi!!"
+      - run:
+          name: Print the Current Time
+          command: date
 
 workflows:
   version: 2
-  greeting:
+  greeting1:
     jobs:
       - build
+  greeting2:
+    jobs:
+      - greeting2
